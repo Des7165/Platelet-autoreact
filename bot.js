@@ -1130,7 +1130,7 @@ const Files = DBM.Files = {};
 
 Files.data = {};
 Files.writers = {};
-Files.crypto = require("crypto");
+
 Files.dataFiles = [
 	"commands.json",
 	"events.json",
@@ -1198,29 +1198,6 @@ Files.saveData = function(file, callback) {
 	}.bind(this));
 };
 
-Files.initEncryption = function() {
-	try {
-		this.password = require("discord-bot-maker");
-	} catch(e) {
-		this.password = "";
-	}
-};
-
-Files.encrypt = function(text) {
-	if(this.password.length === 0) return text;
-	const cipher = this.crypto.createCipher("aes-128-ofb", this.password);
-	let crypted = cipher.update(text, "utf8", "hex");
-	crypted += cipher.final("hex");
-	return crypted;
-};
-
-Files.decrypt = function(text) {
-	if(this.password.length === 0) return text;
-	const decipher = this.crypto.createDecipher("aes-128-ofb", this.password);
-	let dec = decipher.update(text, "hex", "utf8");
-	dec += decipher.final("utf8");
-	return dec;
-};
 
 Files.convertItem = function(item) {
 	if(Array.isArray(item)) {
@@ -1396,7 +1373,7 @@ Files.restoreUser = function(value, bot) {
 	return bot.users.cache.get(userId);
 };
 
-Files.initEncryption();
+
 
 //---------------------------------------------------------------------
 // Audio
